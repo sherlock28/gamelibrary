@@ -1,0 +1,6 @@
+@GameLibrary.Api_HostAddress = http://localhost:5231
+
+GET {{GameLibrary.Api_HostAddress}}/games/
+Accept: application/json
+
+###

@@ -1,0 +1,43 @@
+services:
+  database:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: GameLibraryDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.6
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+      KC_DB: postgres
+      KC_DB_URL_HOST: database
+      KC_DB_URL_DATABASE: Keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+
+      KC_ENABLE_HEALTH_ENDPOINTS: true
+
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+    ports:
+      - "8081:8080"
+    command:
+      - start-dev
+      - --http-host=0.0.0.0
+    volumes:
+      - keycloakdata:/opt/keycloak/data
+    depends_on:
+      - database
+      
+volumes:
+  pgdata:
+  keycloakdata:
