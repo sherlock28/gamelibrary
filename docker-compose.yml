@@ -37,7 +37,23 @@ services:
       - keycloakdata:/opt/keycloak/data
     depends_on:
       - database
-      
+
+
+  pgadmin:
+    image: dpage/pgadmin4:9.10
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+    depends_on:
+      - database
+
+ 
 volumes:
   pgdata:
   keycloakdata:
+  pgadmindata:
