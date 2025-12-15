@@ -1,19 +1,16 @@
 using GameLibrary.Api.DTOs;
 using GameLibrary.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers;
 
+[Authorize]
 [ApiController]
-[Route("[controller]")]
-public class GamesController : ControllerBase
+[Route("api/[controller]")]
+public class GamesController(IGameService gameService) : ControllerBase
 {
-    private readonly IGameService _gameService;
-
-    public GamesController(IGameService gameService)
-    {
-        _gameService = gameService;
-    }
+    private readonly IGameService _gameService = gameService;
 
     [HttpGet(Name = "GetGames")]
     public async Task<IActionResult> GetGames()

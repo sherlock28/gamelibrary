@@ -32,8 +32,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Configure PostgreSQL
+var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<GameLibraryDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connString).EnableSensitiveDataLogging());
 
 // Register Repository and Service
 builder.Services.AddScoped<IGameRepository, GameRepository>();
