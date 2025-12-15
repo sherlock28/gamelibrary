@@ -1,28 +1,73 @@
 @GameLibrary.Api_HostAddress = http://localhost:5000
 
-GET {{GameLibrary.Api_HostAddress}}/games/
+### Get all games
+GET {{GameLibrary.Api_HostAddress}}/api/games
 Accept: application/json
 
 ###
 
-GET {{GameLibrary.Api_HostAddress}}/games
+### Get game by ID
+GET {{GameLibrary.Api_HostAddress}}/api/games/1
+Accept: application/json
 
 ###
 
-POST {{GameLibrary.Api_HostAddress}}/games
+### Create a new game - Example 1
+POST {{GameLibrary.Api_HostAddress}}/api/games
 Content-Type: application/json
 
 {
-  //CreateGameRequest
+  "title": "The Witcher 3: Wild Hunt",
+  "description": "An open-world action role-playing game with a rich story",
+  "price": 39.99
 }
 
 ###
 
-@id=0
-DELETE {{GameLibrary.Api_HostAddress}}/games/{{id}}
+### Create a new game - Example 2
+POST {{GameLibrary.Api_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  "title": "Final Fantasy VII Remake",
+  "description": "A reimagining of the classic JRPG",
+  "price": 59.99
+}
 
 ###
 
-GET {{GameLibrary.Api_HostAddress}}/games/{{id}}
+### Create a new game - Example 3 (Minimal)
+POST {{GameLibrary.Api_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  "title": "Hollow Knight",
+  "description": "A challenging 2D action adventure game",
+  "price": 14.99
+}
+
+###
+
+### Create a new game - Invalid request (Missing title)
+POST {{GameLibrary.Api_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "This will fail because title is empty",
+  "price": 49.99
+}
+
+###
+
+### Delete game by ID
+@gameIdToDelete = 6
+DELETE {{GameLibrary.Api_HostAddress}}/api/games/{{gameIdToDelete}}
+
+###
+
+### Get non-existent game (Should return 404)
+GET {{GameLibrary.Api_HostAddress}}/api/games/999
+Accept: application/json
 
 ###
