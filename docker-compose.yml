@@ -40,7 +40,7 @@ services:
 
 
   pgadmin:
-    image: dpage/pgadmin4:9.10
+    image: dpage/pgadmin4:latest
     restart: always
     ports:
       - 8080:80

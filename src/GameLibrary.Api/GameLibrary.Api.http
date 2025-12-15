@@ -1,6 +1,28 @@
-@GameLibrary.Api_HostAddress = http://localhost:5231
+@GameLibrary.Api_HostAddress = http://localhost:5000
 
 GET {{GameLibrary.Api_HostAddress}}/games/
 Accept: application/json
+
+###
+
+GET {{GameLibrary.Api_HostAddress}}/games
+
+###
+
+POST {{GameLibrary.Api_HostAddress}}/games
+Content-Type: application/json
+
+{
+  //CreateGameRequest
+}
+
+###
+
+@id=0
+DELETE {{GameLibrary.Api_HostAddress}}/games/{{id}}
+
+###
+
+GET {{GameLibrary.Api_HostAddress}}/games/{{id}}
 
 ###

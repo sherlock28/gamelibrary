@@ -12,6 +12,28 @@ public class GameLibraryDbContext : DbContext
 
     public DbSet<Game> Games { get; set; }
 
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entries = ChangeTracker.Entries<Game>();
+
+        foreach (var entry in entries)
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+            }
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -25,8 +47,7 @@ public class GameLibraryDbContext : DbContext
             entity.Property(e => e.UpdatedAt).IsRequired();
         });
 
-        // Seed data with static dates
-        var seedDate = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc);
+        // Seed data with hardcoded static dates
         modelBuilder.Entity<Game>().HasData(
             new Game
             {
@@ -34,8 +55,8 @@ public class GameLibraryDbContext : DbContext
                 Title = "The Legend of Zelda: Tears of the Kingdom",
                 Description = "An epic adventure in the kingdom of Hyrule",
                 Price = 69.99m,
-                CreatedAt = seedDate,
-                UpdatedAt = seedDate
+                CreatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc)
             },
             new Game
             {
@@ -43,8 +64,8 @@ public class GameLibraryDbContext : DbContext
                 Title = "Elden Ring",
                 Description = "A challenging action role-playing game",
                 Price = 59.99m,
-                CreatedAt = seedDate,
-                UpdatedAt = seedDate
+                CreatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc)
             },
             new Game
             {
@@ -52,8 +73,8 @@ public class GameLibraryDbContext : DbContext
                 Title = "Baldur's Gate 3",
                 Description = "A mind-flaying adventure of epic proportions",
                 Price = 59.99m,
-                CreatedAt = seedDate,
-                UpdatedAt = seedDate
+                CreatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc)
             },
             new Game
             {
@@ -61,8 +82,8 @@ public class GameLibraryDbContext : DbContext
                 Title = "Cyberpunk 2077",
                 Description = "An open-world action role-playing game set in the future",
                 Price = 49.99m,
-                CreatedAt = seedDate,
-                UpdatedAt = seedDate
+                CreatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc)
             },
             new Game
             {
@@ -70,8 +91,8 @@ public class GameLibraryDbContext : DbContext
                 Title = "Starfield",
                 Description = "Bethesda's ambitious space exploration RPG",
                 Price = 69.99m,
-                CreatedAt = seedDate,
-                UpdatedAt = seedDate
+                CreatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2025, 12, 9, 0, 0, 0, DateTimeKind.Utc)
             }
         );
     }
